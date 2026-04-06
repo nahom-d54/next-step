@@ -1,0 +1,28 @@
+{
+  "name": "next-step",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Task Breaker monorepo",
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "test": "turbo test",
+    "typecheck": "turbo typecheck",
+    "dev:web": "pnpm --filter @next-step/web dev",
+    "dev:api": "pnpm --filter @next-step/api dev"
+  },
+  "keywords": [
+    "monorepo",
+    "react",
+    "fastify",
+    "task-breaker"
+  ],
+  "author": "",
+  "license": "MIT",
+  "packageManager": "pnpm@10.14.0",
+  "type": "module",
+  "devDependencies": {
+    "turbo": "^2.9.4"
+  }
+}

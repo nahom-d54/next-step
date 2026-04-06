@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+dist/
+build/
+coverage/
+.turbo/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+
+# OS/editor
+.DS_Store
+
+*PLAN.md
