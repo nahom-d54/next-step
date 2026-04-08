@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { debounce } from '@next-step/utils'
 
 type DebounceControls = {
   flush: () => void
@@ -10,41 +11,25 @@ export default function useDebouncedValue<T>(
   delay = 300,
 ): [T, DebounceControls] {
   const [debounced, setDebounced] = useState<T>(value)
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const latestRef = useRef<T>(value)
+  const debouncedRef = useRef<ReturnType<typeof debounce> | null>(null)
 
   useEffect(() => {
-    latestRef.current = value
-    if (timerRef.current) {
-      clearTimeout(timerRef.current)
-    }
-    timerRef.current = setTimeout(() => {
-      setDebounced(latestRef.current)
-      timerRef.current = null
-    }, delay)
+    debouncedRef.current = debounce((v: T) => setDebounced(v), delay)
+    // call immediately for the current value so initial state is correct
+    debouncedRef.current(value)
 
     return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current)
-        timerRef.current = null
-      }
+      debouncedRef.current?.cancel()
+      debouncedRef.current = null
     }
-  }, [value, delay])
+  }, [delay])
 
-  const flush = () => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current)
-      timerRef.current = null
-    }
-    setDebounced(latestRef.current)
-  }
+  useEffect(() => {
+    debouncedRef.current?.(value)
+  }, [value])
 
-  const cancel = () => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current)
-      timerRef.current = null
-    }
-  }
+  const flush = () => debouncedRef.current?.flush()
+  const cancel = () => debouncedRef.current?.cancel()
 
-  return [debounced, { flush, cancel }]
+  return [debounced, { flush: flush ?? (() => {}), cancel: cancel ?? (() => {}) }]
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import type { Task } from './searchStrategies'
 import { getSearchStrategy, searchStrategies } from './searchStrategies'
-import useDebouncedValue from './useDebouncedValue'
+import { debounce } from '@next-step/utils'
 
 type Props = {
   tasks: Task[]
@@ -27,10 +27,19 @@ export default function SearchBar({
   const [query, setQuery] = useState(initialQuery)
   const [strategyKey, setStrategyKey] = useState(initialStrategy)
 
-  const [debouncedQuery, { flush, cancel }] = useDebouncedValue(
-    query,
-    debounceDelay,
-  )
+  const [debouncedQuery, setDebouncedQuery] = useState(query)
+  const debRef = React.useRef<ReturnType<typeof debounce> | null>(null)
+
+  useEffect(() => {
+    debRef.current = debounce((v: string) => setDebouncedQuery(v), debounceDelay)
+    // ensure current value is scheduled
+    debRef.current(query)
+    return () => debRef.current?.cancel()
+  }, [debounceDelay])
+
+  useEffect(() => {
+    debRef.current?.(query)
+  }, [query])
 
   useEffect(() => {
     const strategy = getSearchStrategy(strategyKey)
@@ -40,14 +49,14 @@ export default function SearchBar({
 
   // If tasks change while there's a pending debounce, flush so results stay in sync
   useEffect(() => {
-    flush()
+    debRef.current?.flush()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tasks])
 
   const onKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
     if (e.key === 'Enter') {
       // flush pending debounce and emit immediate results
-      flush()
+      debRef.current?.flush()
       const strategy = getSearchStrategy(strategyKey)
       const results = strategy.search(tasks, query)
       onResults?.(results)
@@ -55,7 +64,7 @@ export default function SearchBar({
 
     if (e.key === 'Escape') {
       setQuery('')
-      cancel()
+      debRef.current?.cancel()
       onResults?.(tasks)
     }
   }
