@@ -5,14 +5,17 @@ A Component-Based Software Development (CBSD) monorepo for a Recursive Task Brea
 ## Component Packages Developed
 
 ### 1. `@next-step/ui-components`
-Reusable UI primitives.
-- **`Card`**: Content container component.
+Reusable, encapsulated UI primitives following the CBSD component model.
+- **`Card`**: Content container with optional title, header/body layout.
+- **`Badge`**: Status/tag display with variant styling (default, success, warning, danger, info).
+- **`Progress`**: Progress bar visualization with label and configurable color.
 
 ### 2. `@next-step/feature-task-analytics` (Insights & Tracking)
-Dashboard components showing task completion rates.
-- **`AnalyticsDashboard`**: Statistical overview component.
+Dashboard components showing task completion rates and productivity metrics.
+- **`AnalyticsDashboard`**: Composite overview displaying stat cards, progress bars, and status badges.
+- **`StatCard`**: Individual metric display with trend indicators.
 - **`CompletionChart`**: Visual task completion over time using Recharts.
 
 ### 3. `@next-step/utils`
-Common utility functions.
-- **`date.ts`**: Helper functions for parsing and formatting dates.
+Common utility functions (pure functions / Objects pattern).
+- **`date.ts`**: Helper functions for parsing and formatting dates (`formatDate`, `timeAgo`, `parseDate`).
