@@ -88,7 +88,7 @@ export default function SearchBar({
           aria-label="Clear search"
           onClick={() => {
             setQuery('')
-            cancel()
+            debRef.current?.cancel()
             onResults?.(tasks)
           }}
           style={{ padding: '6px 8px' }}

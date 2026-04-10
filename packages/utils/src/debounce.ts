@@ -1,4 +1,4 @@
-type DebouncedFunction<T extends (...args: any[]) => void> = ((...args: Parameters<T>) => void) & {
+export type DebouncedFunction<T extends (...args: any[]) => void> = ((...args: Parameters<T>) => void) & {
   cancel: () => void
   flush: () => void
 }

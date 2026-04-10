@@ -27,7 +27,39 @@ export const searchByTitle: SearchStrategy = {
   },
 }
 
-export const searchStrategies: SearchStrategy[] = [searchByTitle]
+export const searchByPriority: SearchStrategy = {
+  key: 'priority',
+  label: 'Filter by priority',
+  search(tasks, query) {
+    const normalizedQuery = query.trim().toLowerCase()
+    if (!normalizedQuery) return tasks
+
+    return tasks.filter((task) =>
+      String((task.priority as string) ?? '')
+        .toLowerCase()
+        .includes(normalizedQuery),
+    )
+  },
+}
+
+export const searchByStatus: SearchStrategy = {
+  key: 'status',
+  label: 'Filter by status',
+  search(tasks, query) {
+    const normalizedQuery = query.trim().toLowerCase()
+    if (!normalizedQuery) return tasks
+
+    return tasks.filter((task) =>
+      String((task.status as string) ?? '').toLowerCase().includes(normalizedQuery),
+    )
+  },
+}
+
+export const searchStrategies: SearchStrategy[] = [
+  searchByTitle,
+  searchByPriority,
+  searchByStatus,
+]
 
 export function getSearchStrategy(key: string): SearchStrategy {
   const strategy = searchStrategies.find((item) => item.key === key)
