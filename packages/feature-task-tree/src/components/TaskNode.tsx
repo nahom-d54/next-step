@@ -1,4 +1,4 @@
-import type { TaskNodeProps } from '../types';
+import type { TaskNodeProps, TaskPriority, TaskStatus } from '../types';
 
 /**
  * TaskNode Component
@@ -22,7 +22,8 @@ export function TaskNode({
   onSelect,
   onToggle,
 }: TaskNodeProps) {
-  const hasChildren = task.children && task.children.length > 0;
+  const childCount = task.children?.length ?? 0;
+  const hasChildren = childCount > 0;
 
   const handleClick = () => {
     onSelect?.(task);
@@ -34,7 +35,7 @@ export function TaskNode({
   };
 
   // Status color mapping
-  const statusColors: Record<string, string> = {
+  const statusColors: Record<TaskStatus, string> = {
     pending: '#6b7280',
     'in-progress': '#3b82f6',
     completed: '#10b981',
@@ -42,18 +43,19 @@ export function TaskNode({
   };
 
   // Priority color mapping
-  const priorityColors: Record<string, string> = {
+  const priorityColors: Record<TaskPriority, string> = {
     low: '#9ca3af',
     medium: '#f59e0b',
     high: '#f97316',
     urgent: '#dc2626',
   };
 
+  const statusLabel = task.status.replace('-', ' ');
+
   return (
     <div
       className={`task-node ${isSelected ? 'task-node--selected' : ''}`}
       style={{
-        paddingLeft: `${depth * 24}px`,
         display: 'flex',
         alignItems: 'center',
         gap: '8px',
@@ -72,6 +74,7 @@ export function TaskNode({
       {/* Expand/Collapse Toggle */}
       {hasChildren ? (
         <button
+          type="button"
           onClick={handleToggle}
           aria-label={isExpanded ? 'Collapse' : 'Expand'}
           style={{
@@ -86,7 +89,7 @@ export function TaskNode({
           {isExpanded ? '▼' : '▶'}
         </button>
       ) : (
-        <span style={{ width: '24px' }} />
+        <span style={{ width: '24px' }} aria-hidden="true" />
       )}
 
       {/* Task Content - TODO: Replace with Card component */}
@@ -118,7 +121,7 @@ export function TaskNode({
             color: statusColors[task.status],
           }}
         >
-          {task.status}
+          {statusLabel}
         </span>
 
         {/* Priority Badge - TODO: Replace with Badge component */}
@@ -142,7 +145,7 @@ export function TaskNode({
               color: '#9ca3af',
             }}
           >
-            ({task.children!.length} subtask{task.children!.length !== 1 ? 's' : ''})
+            ({childCount} subtask{childCount !== 1 ? 's' : ''})
           </span>
         )}
       </div>
