@@ -29,6 +29,13 @@ export function TaskNode({
     onSelect?.(task);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onSelect?.(task);
+    }
+  };
+
   const handleToggle = (e: React.MouseEvent) => {
     e.stopPropagation();
     onToggle?.(task.id);
@@ -67,7 +74,10 @@ export function TaskNode({
         transition: 'background-color 0.2s',
       }}
       onClick={handleClick}
+      onKeyDown={handleKeyDown}
       role="treeitem"
+      tabIndex={0}
+      aria-level={depth + 1}
       aria-expanded={hasChildren ? isExpanded : undefined}
       aria-selected={isSelected}
     >
