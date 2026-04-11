@@ -1,7 +1,12 @@
+export { ExportButton } from "./ExportButton.js";
+export { ExportOptions } from "./ExportOptions.js";
+export { EXPORT_FORMATS, formatLabel } from "./formatLabels.js";
+export type { ExportButtonProps } from "./ExportButton.js";
+export type { ExportOptionsProps } from "./ExportOptions.js";
 export type {
   ExportAdapter,
   ExportFormat,
   ExportPreviewData,
   ExportRequest,
   ExportTaskNode,
-} from './types.js';
+} from "./types.js";
