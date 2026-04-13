@@ -2,16 +2,17 @@
   "compilerOptions": {
     "rootDir": ".",
     "moduleResolution": "bundler",
-    "references": [
-      { "path": "./packages/utils/tsconfig.json" },
-      { "path": "./packages/feature-task-search/tsconfig.json" },
-      { "path": "./apps/api/tsconfig.json" },
-      { "path": "./apps/web/tsconfig.json" }
-    ],
     "target": "ES2020",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "jsx": "react-jsx",
-    "lib": ["ES2020", "DOM"]
-  }
+    "lib": ["ES2020", "DOM"],
+    "composite": true
+  },
+  "references": [
+    { "path": "./packages/utils" },
+    { "path": "./packages/feature-task-search" },
+    { "path": "./apps/api" },
+    { "path": "./apps/web" }
+  ]
 }
