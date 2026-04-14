@@ -15,6 +15,7 @@ Dashboard components showing task completion rates and productivity metrics.
 - **`AnalyticsDashboard`**: Composite overview displaying stat cards, progress bars, and status badges.
 - **`StatCard`**: Individual metric display with trend indicators.
 - **`CompletionChart`**: Visual task completion over time using Recharts.
+- **`ProductivityScore`**: Displays daily and weekly productivity metrics alongside trend badges.
 
 ### 3. `@next-step/utils`
 Common utility functions (pure functions / Objects pattern).
