@@ -29,11 +29,12 @@ export function TaskTree({
    */
   const renderTree = (items: Task[], depth = 0): React.ReactNode => {
     return items.map((task) => {
+      const children = task.children ?? [];
       const isExpanded = expandedIds.has(task.id);
-      const hasChildren = task.children && task.children.length > 0;
+      const hasChildren = children.length > 0;
 
       return (
-        <div key={task.id} className="task-tree__item" role="group">
+        <div key={task.id} className="task-tree__item">
           <TaskNode
             task={task}
             depth={depth}
@@ -55,8 +56,8 @@ export function TaskTree({
 
           {/* Render children if expanded - recursive call */}
           {hasChildren && isExpanded && (
-            <div className="task-tree__children">
-              {renderTree(task.children!, depth + 1)}
+            <div className="task-tree__children" role="group">
+              {renderTree(children, depth + 1)}
             </div>
           )}
         </div>
