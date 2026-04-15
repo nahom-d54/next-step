@@ -12,6 +12,7 @@
   "references": [
     { "path": "./packages/utils" },
     { "path": "./packages/feature-task-search" },
+    { "path": "./packages/feature-task-tags" },
     { "path": "./apps/api" },
     { "path": "./apps/web" }
   ]
