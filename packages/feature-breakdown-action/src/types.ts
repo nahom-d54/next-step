@@ -9,6 +9,11 @@ export interface BreakdownActionItem {
   description: string;
 }
 
+export interface BreakdownTreeItem extends BreakdownActionItem {
+  id?: string;
+  children?: BreakdownTreeItem[];
+}
+
 export interface BreakdownActionResponse {
   items: BreakdownActionItem[];
 }

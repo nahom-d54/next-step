@@ -1,12 +1,10 @@
-import { type ButtonHTMLAttributes, type ReactNode, useState } from "react";
+import { useState, type ButtonHTMLAttributes, type ReactNode } from "react";
 
 /**
  * Props for the BreakdownButton component.
  */
-export interface BreakdownButtonProps extends Omit<
-  ButtonHTMLAttributes<HTMLButtonElement>,
-  "onClick" | "children"
-> {
+export interface BreakdownButtonProps
+  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "onClick" | "children"> {
   /**
    * Trigger callback for the breakdown action.
    * Supports sync and async handlers.
@@ -43,13 +41,12 @@ export function BreakdownButton({
   isLoading,
   disabled,
   label = "Break down task",
-  loadingLabel = "Breaking down…",
+  loadingLabel = "Breaking down...",
   tooltip = "Use AI to split this task into smaller subtasks.",
   style,
   ...buttonProps
 }: BreakdownButtonProps) {
   const [internalLoading, setInternalLoading] = useState(false);
-
   const loading = isLoading ?? internalLoading;
 
   const handleClick = async () => {
@@ -116,10 +113,8 @@ export function BreakdownButton({
             }}
           />
         ) : null}
-
         <span>{loading ? loadingLabel : label}</span>
       </button>
-
       <style>
         {`
           @keyframes breakdown-button-spin {

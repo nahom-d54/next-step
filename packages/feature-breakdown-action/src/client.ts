@@ -1,4 +1,4 @@
-import {
+import type {
   BreakdownActionClientConfig,
   BreakdownActionRequest,
   BreakdownActionResponse,
@@ -9,7 +9,7 @@ const DEFAULT_ENDPOINT = "/api/breakdown-action";
 export class BreakdownActionApiClient {
   private readonly baseUrl: string;
   private readonly endpoint: string;
-  private readonly token: string | undefined;
+  private readonly token?: string;
   private readonly fetchFn: typeof fetch;
 
   constructor(config: BreakdownActionClientConfig) {
