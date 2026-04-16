@@ -1,3 +1,9 @@
+export {
+  CsvExportAdapter,
+  JsonExportAdapter,
+  MarkdownExportAdapter,
+  getExportAdapter,
+} from "./adapters/index.js";
 export { ExportButton } from "./ExportButton.js";
 export { ExportOptions } from "./ExportOptions.js";
 export { EXPORT_FORMATS, formatLabel } from "./formatLabels.js";
