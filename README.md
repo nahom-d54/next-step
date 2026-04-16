@@ -17,6 +17,11 @@ Dashboard components showing task completion rates and productivity metrics.
 - **`CompletionChart`**: Visual task completion over time using Recharts.
 - **`ProductivityScore`**: Displays daily and weekly productivity metrics alongside trend badges.
 
-### 3. `@next-step/utils`
+### 3. `@next-step/feature-task-history` (Insights & Tracking)
+Centralized state management for task versioning and change tracking.
+- **`useHistory`**: Custom React hook for managing Undo/Redo operations and state persistence across task modifications.
+
+### 4. `@next-step/utils`
 Common utility functions (pure functions / Objects pattern).
 - **`date.ts`**: Helper functions for parsing and formatting dates (`formatDate`, `timeAgo`, `parseDate`).
+- **`id.ts`**: Alphanumeric ID generation utility (`generateId`).

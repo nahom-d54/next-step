@@ -152,6 +152,7 @@ importers:
         specifier: ~5.9.2
         version: 5.9.3
 
+<<<<<<< HEAD
   packages/feature-task-templates:
     dependencies:
       react:
@@ -159,14 +160,32 @@ importers:
         version: 19.2.4
       react-dom:
         specifier: ^19.0.0
+=======
+  packages/feature-task-history:
+    dependencies:
+      '@next-step/ui-components':
+        specifier: workspace:*
+        version: link:../ui-components
+      '@next-step/utils':
+        specifier: workspace:*
+        version: link:../utils
+      react:
+        specifier: ^19.2.4
+        version: 19.2.4
+      react-dom:
+        specifier: ^19.2.4
+>>>>>>> 59df294 (docs: finalize Day 2 Week 2 (Day 5) documentation)
         version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.14
         version: 19.2.14
+<<<<<<< HEAD
       '@types/react-dom':
         specifier: ^19.2.3
         version: 19.2.3(@types/react@19.2.14)
+=======
+>>>>>>> 59df294 (docs: finalize Day 2 Week 2 (Day 5) documentation)
       typescript:
         specifier: ~6.0.2
         version: 6.0.2
