@@ -6,6 +6,7 @@
   "types": "./src/index.ts"
   ,
   "dependencies": {
-    "@next-step/utils": "workspace:*"
+    "@next-step/utils": "workspace:*",
+    "@next-step/feature-task-tags": "workspace:*"
   }
 }   

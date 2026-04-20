@@ -6,6 +6,8 @@ import { debounce } from '@next-step/utils'
 type Props = {
   tasks: Task[]
   initialQuery?: string
+  /** externally-controlled query; when provided, SearchBar will sync to it */
+  externalQuery?: string
   initialStrategy?: string
   onResults?: (results: Task[]) => void
   /** debounce delay in ms */
@@ -18,6 +20,7 @@ type Props = {
 export default function SearchBar({
   tasks,
   initialQuery = '',
+  externalQuery,
   initialStrategy = 'title',
   onResults,
   debounceDelay = 300,
@@ -29,6 +32,16 @@ export default function SearchBar({
 
   const [debouncedQuery, setDebouncedQuery] = useState(query)
   const debRef = React.useRef<ReturnType<typeof debounce> | null>(null)
+
+  // sync to externally provided query when it changes
+  useEffect(() => {
+    if (typeof externalQuery !== 'undefined' && externalQuery !== query) {
+      setQuery(externalQuery)
+      // schedule debounced update immediately
+      debRef.current?.(externalQuery)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [externalQuery])
 
   useEffect(() => {
     debRef.current = debounce((v: string) => setDebouncedQuery(v), debounceDelay)

@@ -106,9 +106,20 @@ importers:
 
   packages/feature-task-search:
     dependencies:
+      '@next-step/feature-task-tags':
+        specifier: workspace:*
+        version: link:../feature-task-tags
       '@next-step/utils':
         specifier: workspace:*
         version: link:../utils
+
+  packages/feature-task-tags:
+    dependencies:
+      '@next-step/ui-components':
+        specifier: workspace:*
+        version: link:../ui-components
+
+  packages/ui-components: {}
 
   packages/utils: {}
 
