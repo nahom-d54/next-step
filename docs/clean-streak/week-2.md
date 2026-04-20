@@ -29,10 +29,12 @@
 - **Observer Pattern (Design):** `ProductivityScore` leverages purely functional React rendering, acting as a reactive consumer of the upstream score data. The presentation updates automatically when incoming component props change.
 - **Composite Pattern (Containment):** Demonstrates structural containment by composing the root UI `Card`, progress bars, and directional badges into a specific feature view.
 - **Memento Pattern (State Management):** The `useHistory` implementation and `HistoryPanel` facilitate the Memento pattern by capturing, displaying, and restoring previous object states (history entries).
+- **Command Pattern (Logic):** Encapsulates task modifications into `HistoryEntry` objects, allowing the application to treat state changes as discrete, reversible commands with descriptive metadata.
 
 ## Design & Component Model
 - Further enforces bottom-up component-based software development (CBSD) by orchestrating strictly decoupled, domain-agnostic UI primitives into a specific, business-valued structure.
-- The `feature-task-history` package introduces specialized utility logic and UI components (Encapsulated Component Model) designed to decorate other task features with versioning capabilities.
+- **Encapsulated Component Model:** The `feature-task-history` package provides specialized services through a well-defined public interface, allowing other features to inherit versioning capabilities without exposing internal state management logic.
+- **Composition over Inheritance:** `HistoryPanel` demonstrates structural composition by wrapping atomic UI components to create a complex, domain-specific display unit.
 
 ## Miscellaneous
 - Refactored `useHistory` to use functional state updates, ensuring thread-safe state transitions during rapid undo/redo actions.
