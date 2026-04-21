@@ -7,6 +7,7 @@ import {
 } from "@next-step/feature-task-analytics";
 import {
   HistoryPanel,
+  UndoRedoControls,
   useHistory,
   type HistoryEntry,
 } from "@next-step/feature-task-history";
@@ -45,7 +46,7 @@ export function StudentCSystem({ className = "" }: StudentCSystemProps) {
         trendValue={8}
       />
 
-      <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+      <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", alignItems: "center" }}>
         <button
           type="button"
           onClick={() =>
@@ -60,12 +61,13 @@ export function StudentCSystem({ className = "" }: StudentCSystemProps) {
         >
           Make Change
         </button>
-        <button type="button" onClick={undo} disabled={!canUndo}>
-          Undo
-        </button>
-        <button type="button" onClick={redo} disabled={!canRedo}>
-          Redo
-        </button>
+        
+        <UndoRedoControls
+          onUndo={undo}
+          onRedo={redo}
+          canUndo={canUndo}
+          canRedo={canRedo}
+        />
       </div>
 
       <HistoryPanel
