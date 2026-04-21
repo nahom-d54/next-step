@@ -152,15 +152,6 @@ importers:
         specifier: ~5.9.2
         version: 5.9.3
 
-<<<<<<< HEAD
-  packages/feature-task-templates:
-    dependencies:
-      react:
-        specifier: ^19.0.0
-        version: 19.2.4
-      react-dom:
-        specifier: ^19.0.0
-=======
   packages/feature-task-history:
     dependencies:
       '@next-step/ui-components':
@@ -174,18 +165,30 @@ importers:
         version: 19.2.4
       react-dom:
         specifier: ^19.2.4
->>>>>>> 59df294 (docs: finalize Day 2 Week 2 (Day 5) documentation)
         version: 19.2.4(react@19.2.4)
     devDependencies:
       '@types/react':
         specifier: ^19.2.14
         version: 19.2.14
-<<<<<<< HEAD
+      typescript:
+        specifier: ~6.0.2
+        version: 6.0.2
+
+  packages/feature-task-templates:
+    dependencies:
+      react:
+        specifier: ^19.0.0
+        version: 19.2.4
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.2.4(react@19.2.4)
+    devDependencies:
+      '@types/react':
+        specifier: ^19.2.14
+        version: 19.2.14
       '@types/react-dom':
         specifier: ^19.2.3
         version: 19.2.3(@types/react@19.2.14)
-=======
->>>>>>> 59df294 (docs: finalize Day 2 Week 2 (Day 5) documentation)
       typescript:
         specifier: ~6.0.2
         version: 6.0.2
@@ -233,6 +236,58 @@ importers:
       typescript:
         specifier: ~6.0.2
         version: 6.0.2
+
+  systems/student-c-system:
+    dependencies:
+      '@next-step/feature-task-analytics':
+        specifier: workspace:*
+        version: link:../../packages/feature-task-analytics
+      '@next-step/feature-task-history':
+        specifier: workspace:*
+        version: link:../../packages/feature-task-history
+      react:
+        specifier: ^19.2.4
+        version: 19.2.4
+      react-dom:
+        specifier: ^19.2.4
+        version: 19.2.4(react@19.2.4)
+    devDependencies:
+      '@eslint/js':
+        specifier: ^9.39.4
+        version: 9.39.4
+      '@types/node':
+        specifier: ^24.12.2
+        version: 24.12.2
+      '@types/react':
+        specifier: ^19.2.14
+        version: 19.2.14
+      '@types/react-dom':
+        specifier: ^19.2.3
+        version: 19.2.3(@types/react@19.2.14)
+      '@vitejs/plugin-react':
+        specifier: ^6.0.1
+        version: 6.0.1(vite@8.0.5(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@24.12.2))
+      eslint:
+        specifier: ^9.39.4
+        version: 9.39.4
+      eslint-plugin-react-hooks:
+        specifier: ^7.0.1
+        version: 7.0.1(eslint@9.39.4)
+      eslint-plugin-react-refresh:
+        specifier: ^0.5.2
+        version: 0.5.2(eslint@9.39.4)
+      globals:
+        specifier: ^17.4.0
+        version: 17.4.0
+      typescript:
+        specifier: ~6.0.2
+        version: 6.0.2
+      typescript-eslint:
+        specifier: ^8.58.0
+        version: 8.58.0(eslint@9.39.4)(typescript@6.0.2)
+      vite:
+        specifier: ^8.0.4
+        version: 8.0.5(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@24.12.2)
 
 packages:
 

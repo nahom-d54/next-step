@@ -1,17 +1,18 @@
 {
-  "name": "@next-step/web",
+  "name": "@next-step/student-c-system",
+  "version": "0.1.0",
   "private": true,
-  "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "typecheck": "tsc -b --pretty false",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "test": "echo \"No tests configured for web yet\""
+    "preview": "vite preview"
   },
   "dependencies": {
+    "@next-step/feature-task-analytics": "workspace:*",
+    "@next-step/feature-task-history": "workspace:*",
     "react": "^19.2.4",
     "react-dom": "^19.2.4"
   },
