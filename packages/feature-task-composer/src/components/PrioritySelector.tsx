@@ -18,6 +18,8 @@ export function PrioritySelector({
   onChange,
   disabled,
   id,
+  invalid,
+  ariaDescribedBy,
 }: PrioritySelectorProps) {
   return (
     <label style={{ display: 'grid', gap: '6px' }}>
@@ -26,6 +28,8 @@ export function PrioritySelector({
         id={id}
         value={value}
         disabled={disabled}
+        aria-invalid={invalid}
+        aria-describedby={ariaDescribedBy}
         onChange={(event: ChangeEvent<HTMLSelectElement>) => {
           const next = event.target.value;
           if (

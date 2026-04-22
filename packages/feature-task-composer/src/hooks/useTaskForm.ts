@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import type {
   TaskComposerFieldErrors,
@@ -31,13 +31,35 @@ function defaultValidate(values: TaskComposerValues): TaskComposerValidationResu
   return validateTaskComposerValues(values);
 }
 
+function normalizeValues(values: TaskComposerValues): TaskComposerValues {
+  return {
+    ...values,
+    title: values.title.trim(),
+    description: values.description.trim(),
+  };
+}
+
 export function useTaskForm(options: UseTaskFormOptions = {}): UseTaskFormReturn {
   const { initialValues, onSubmit, validate = defaultValidate } = options;
 
-  const initial = useMemo(() => mergeInitialValues(initialValues), [initialValues]);
+  const initial = useMemo(
+    () => mergeInitialValues(initialValues),
+    [
+      initialValues?.title,
+      initialValues?.description,
+      initialValues?.priority,
+      initialValues?.dueDate,
+    ],
+  );
   const [values, setValues] = useState<TaskComposerValues>(initial);
   const [errors, setErrors] = useState<TaskComposerFieldErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    setValues(initial);
+    setErrors({});
+    setIsSubmitting(false);
+  }, [initial]);
 
   const updateField = useCallback(
     <K extends TaskComposerFieldName>(field: K, value: TaskComposerValues[K]) => {
@@ -68,7 +90,10 @@ export function useTaskForm(options: UseTaskFormOptions = {}): UseTaskFormReturn
     async (event) => {
       event?.preventDefault();
 
-      const result = validate(values);
+      const normalizedValues = normalizeValues(values);
+      setValues(normalizedValues);
+
+      const result = validate(normalizedValues);
       setErrors(result.errors);
 
       if (!result.isValid) {
@@ -81,7 +106,7 @@ export function useTaskForm(options: UseTaskFormOptions = {}): UseTaskFormReturn
 
       setIsSubmitting(true);
       try {
-        await onSubmit(values);
+        await onSubmit(normalizedValues);
         return true;
       } finally {
         setIsSubmitting(false);

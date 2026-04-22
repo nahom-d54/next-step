@@ -7,6 +7,8 @@ export function DueDatePicker({
   onChange,
   disabled,
   id,
+  invalid,
+  ariaDescribedBy,
   min,
   max,
 }: DueDatePickerProps) {
@@ -18,6 +20,8 @@ export function DueDatePicker({
         type="date"
         value={value}
         disabled={disabled}
+        aria-invalid={invalid}
+        aria-describedby={ariaDescribedBy}
         min={min}
         max={max}
         onChange={(event: ChangeEvent<HTMLInputElement>) => {

@@ -4,6 +4,26 @@ import type {
   TaskComposerValues,
 } from './types';
 
+const DATE_INPUT_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+
+function isValidDateInput(value: string): boolean {
+  if (!DATE_INPUT_PATTERN.test(value)) {
+    return false;
+  }
+
+  const [yearPart, monthPart, dayPart] = value.split('-');
+  const year = Number(yearPart);
+  const month = Number(monthPart);
+  const day = Number(dayPart);
+
+  const date = new Date(Date.UTC(year, month - 1, day));
+  return (
+    date.getUTCFullYear() === year &&
+    date.getUTCMonth() + 1 === month &&
+    date.getUTCDate() === day
+  );
+}
+
 export function validateTaskComposerValues(
   values: TaskComposerValues,
 ): TaskComposerValidationResult {
@@ -31,7 +51,7 @@ export function validateTaskComposerValues(
   }
 
   const dueDate = values.dueDate.trim();
-  if (dueDate.length > 0 && Number.isNaN(Date.parse(dueDate))) {
+  if (dueDate.length > 0 && !isValidDateInput(dueDate)) {
     errors.dueDate = 'Due date must be a valid date';
   }
 

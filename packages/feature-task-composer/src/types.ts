@@ -29,6 +29,8 @@ export interface PrioritySelectorProps {
   onChange: (priority: TaskComposerPriority) => void;
   disabled?: boolean;
   id?: string;
+  invalid?: boolean;
+  ariaDescribedBy?: string;
 }
 
 export interface DueDatePickerProps {
@@ -36,6 +38,8 @@ export interface DueDatePickerProps {
   onChange: (value: string) => void;
   disabled?: boolean;
   id?: string;
+  invalid?: boolean;
+  ariaDescribedBy?: string;
   min?: string;
   max?: string;
 }
