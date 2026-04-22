@@ -1,6 +1,10 @@
 export type Storage = {
-  getItem<T = unknown>(key: string): T | null
-  setItem<T = unknown>(key: string, value: T): void
+  get<T = unknown>(key: string): T | null
+  set<T = unknown>(key: string, value: T): boolean
+  remove(key: string): boolean
+  // Backwards-compatible aliases
+  getItem?<T = unknown>(key: string): T | null
+  setItem?<T = unknown>(key: string, value: T): void
 }
 
 const isLocalStorageAvailable = (() => {
@@ -18,32 +22,80 @@ const isLocalStorageAvailable = (() => {
 const memoryStore = new Map<string, string>()
 
 export const storage: Storage = {
-  getItem(key) {
+  get(key) {
     if (isLocalStorageAvailable) {
-      const v = window.localStorage.getItem(key)
       try {
-        return v === null ? null : JSON.parse(v)
-      } catch {
-        return v as any
+        const v = window.localStorage.getItem(key)
+        return v === null ? null : (JSON.parse(v) as any)
+      } catch (err) {
+        try {
+          const v = window.localStorage.getItem(key)
+          return v === null ? null : (v as any)
+        } catch {
+          return null
+        }
       }
     }
 
     const v = memoryStore.get(key)
     if (typeof v === 'undefined') return null
     try {
-      return JSON.parse(v)
+      return JSON.parse(v) as any
     } catch {
       return v as any
     }
   },
 
-  setItem(key, value) {
-    const s = JSON.stringify(value)
+  set(key, value) {
+    const s = (() => {
+      try {
+        return JSON.stringify(value)
+      } catch {
+        return String(value)
+      }
+    })()
+
     if (isLocalStorageAvailable) {
-      window.localStorage.setItem(key, s)
-      return
+      try {
+        window.localStorage.setItem(key, s)
+        return true
+      } catch {
+        return false
+      }
     }
-    memoryStore.set(key, s)
+
+    try {
+      memoryStore.set(key, s)
+      return true
+    } catch {
+      return false
+    }
+  },
+
+  remove(key) {
+    if (isLocalStorageAvailable) {
+      try {
+        window.localStorage.removeItem(key)
+        return true
+      } catch {
+        return false
+      }
+    }
+
+    try {
+      return memoryStore.delete(key)
+    } catch {
+      return false
+    }
+  },
+
+  // Backwards-compatible aliases
+  getItem(key) {
+    return this.get(key)
+  },
+  setItem(key, value) {
+    // deliberately ignore the boolean return for the old API
+    this.set(key, value)
   },
 }
 

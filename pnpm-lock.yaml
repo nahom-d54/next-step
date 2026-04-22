@@ -109,6 +109,9 @@ importers:
       '@next-step/feature-task-tags':
         specifier: workspace:*
         version: link:../feature-task-tags
+      '@next-step/ui-components':
+        specifier: workspace:*
+        version: link:../ui-components
       '@next-step/utils':
         specifier: workspace:*
         version: link:../utils
@@ -118,6 +121,9 @@ importers:
       '@next-step/ui-components':
         specifier: workspace:*
         version: link:../ui-components
+      '@next-step/utils':
+        specifier: workspace:*
+        version: link:../utils
 
   packages/ui-components: {}
 

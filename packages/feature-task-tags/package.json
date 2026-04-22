@@ -5,6 +5,7 @@
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "dependencies": {
-    "@next-step/ui-components": "workspace:*"
+    "@next-step/ui-components": "workspace:*",
+    "@next-step/utils": "workspace:*"
   }
 }
