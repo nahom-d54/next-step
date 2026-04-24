@@ -16,14 +16,15 @@ export default function Progress({ value, color, className }: Props) {
       aria-valuemin={0}
       aria-valuemax={100}
       aria-valuenow={pct}
-      className={className}
+      className={`w-full ${className ?? ''}`}
     >
-      <div className="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
+      <div className="w-full bg-gray-100 rounded-full h-2 sm:h-3 overflow-hidden">
         <div
           className={`${color ?? 'bg-blue-600'} h-full transition-all`} 
           style={{ width: `${pct}%` }}
         />
       </div>
+      <span className="sr-only">{pct}%</span>
     </div>
   )
 }

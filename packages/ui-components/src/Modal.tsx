@@ -34,7 +34,7 @@ export default function Modal({ isOpen, onClose, children, title, className }: P
       role="dialog"
       aria-modal="true"
       aria-label={title ?? 'Modal'}
-      className={`fixed inset-0 z-50 flex items-center justify-center px-4 ${className ?? ''}`}
+      className={`fixed inset-0 z-50 flex items-end sm:items-center justify-center px-4 ${className ?? ''}`}
     >
       <div
         className="fixed inset-0 bg-black/50"
@@ -45,7 +45,7 @@ export default function Modal({ isOpen, onClose, children, title, className }: P
       <div
         ref={contentRef}
         tabIndex={-1}
-        className="relative bg-white rounded-lg shadow-lg max-w-lg w-full p-4 mx-auto z-10"
+        className="relative bg-white rounded-t-lg sm:rounded-lg shadow-lg w-full max-w-full sm:max-w-lg p-4 mx-auto z-10"
       >
         {title ? <h2 className="text-lg font-semibold mb-2">{title}</h2> : null}
         <div>{children}</div>
