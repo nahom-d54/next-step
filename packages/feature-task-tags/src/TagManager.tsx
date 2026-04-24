@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Modal, Button } from '@next-step/ui-components'
 import type { Tag } from './types'
-import { generateId } from '@next-step/utils'
+import { generateId, storage } from '@next-step/utils'
 
 type Props = {
   tags: Tag[]
@@ -14,10 +14,49 @@ export default function TagManager({ tags, onTagCreated, onTagDeleted, className
   const [open, setOpen] = useState(false)
   const [label, setLabel] = useState('')
   const [color, setColor] = useState('#000000')
+  const [localTags, setLocalTags] = useState<Tag[]>(tags || [])
+  const STORAGE_KEY = 'feature-task-tags:tags'
+  const [initializedFromStorage, setInitializedFromStorage] = useState(false)
+
+  // Initialize from storage on mount (if available), otherwise use props
+  useEffect(() => {
+    try {
+      const saved = storage.get<Tag[]>(STORAGE_KEY)
+      if (Array.isArray(saved)) {
+        setLocalTags(saved)
+        setInitializedFromStorage(true)
+      } else {
+        setLocalTags(tags || [])
+      }
+    } catch (err) {
+      setLocalTags(tags || [])
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // If parent-provided tags change and we didn't initialize from storage, reflect them
+  useEffect(() => {
+    if (!initializedFromStorage) setLocalTags(tags || [])
+  }, [tags, initializedFromStorage])
+
+  const persistTags = (next: Tag[]) => {
+    try {
+      storage.set(STORAGE_KEY, next)
+    } catch {
+      // no-op; storage handles fallback
+    }
+  }
 
   const handleCreate = () => {
     const newTag: Tag = { id: generateId('tag'), label: label.trim() || 'Untitled', color }
-    onTagCreated(newTag)
+    const next = [...localTags, newTag]
+    setLocalTags(next)
+    persistTags(next)
+    try {
+      onTagCreated(newTag)
+    } catch {
+      // ignore if parent callback not present
+    }
     setOpen(false)
     setLabel('')
     setColor('#000000')
@@ -31,7 +70,7 @@ export default function TagManager({ tags, onTagCreated, onTagDeleted, className
       </div>
 
       <ul className="space-y-2">
-        {tags.map((t) => (
+        {localTags.map((t) => (
           <li key={t.id} className="flex items-center gap-3">
             <span
               aria-hidden
@@ -41,7 +80,16 @@ export default function TagManager({ tags, onTagCreated, onTagDeleted, className
             <span className="flex-1 text-sm">{t.label}</span>
             <Button
               variant="ghost"
-              onClick={() => onTagDeleted(t.id)}
+              onClick={() => {
+                const next = localTags.filter((x) => x.id !== t.id)
+                setLocalTags(next)
+                persistTags(next)
+                try {
+                  onTagDeleted(t.id)
+                } catch {
+                  // ignore
+                }
+              }}
               aria-label={`Delete tag ${t.label}`}
             >
               ✕
