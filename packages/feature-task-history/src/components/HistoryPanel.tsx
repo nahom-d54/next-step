@@ -6,6 +6,7 @@ import { HistoryEntry } from '../types';
 export interface HistoryPanelProps {
   entries: HistoryEntry<any>[];
   onRestore?: (entry: HistoryEntry<any>) => void;
+  onViewDiff?: (entry: HistoryEntry<any>) => void;
   className?: string;
 }
 
@@ -53,22 +54,40 @@ export function HistoryPanel({ entries, onRestore, className = '' }: HistoryPane
                 <span style={{ fontSize: '0.75rem', color: '#a0aec0' }}>
                   {entry.action} • {formatDate(entry.timestamp)}
                 </span>
-                {onRestore && (
-                  <button
-                    onClick={() => onRestore(entry)}
-                    style={{
-                      background: 'none',
-                      border: 'none',
-                      color: '#4299e1',
-                      fontSize: '0.75rem',
-                      cursor: 'pointer',
-                      padding: 0,
-                      textDecoration: 'underline',
-                    }}
-                  >
-                    Restore
-                  </button>
-                )}
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  {onViewDiff && (
+                    <button
+                      onClick={() => onViewDiff(entry)}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        color: '#4299e1',
+                        fontSize: '0.75rem',
+                        cursor: 'pointer',
+                        padding: 0,
+                        textDecoration: 'underline',
+                      }}
+                    >
+                      Diff
+                    </button>
+                  )}
+                  {onRestore && (
+                    <button
+                      onClick={() => onRestore(entry)}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        color: '#4299e1',
+                        fontSize: '0.75rem',
+                        cursor: 'pointer',
+                        padding: 0,
+                        textDecoration: 'underline',
+                      }}
+                    >
+                      Restore
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           )).reverse()

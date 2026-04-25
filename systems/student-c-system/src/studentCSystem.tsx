@@ -8,9 +8,11 @@ import {
 import {
   HistoryPanel,
   UndoRedoControls,
+  VersionDiff,
   useHistory,
   type HistoryEntry,
 } from "@next-step/feature-task-history";
+import { useState } from "react";
 
 type DemoTask = {
   title: string;
@@ -31,6 +33,8 @@ export function StudentCSystem({ className = "" }: StudentCSystemProps) {
 
   const { state, push, undo, redo, canUndo, canRedo } =
     useHistory<DemoTask>(initialTask);
+
+  const [diffTarget, setDiffTarget] = useState<HistoryEntry<DemoTask> | null>(null);
 
   return (
     <div
@@ -75,6 +79,17 @@ export function StudentCSystem({ className = "" }: StudentCSystemProps) {
         onRestore={(entry: HistoryEntry<DemoTask>) => {
           push(entry.payload, `Restore: ${entry.description}`);
         }}
+        onViewDiff={(entry: HistoryEntry<DemoTask>) => {
+          setDiffTarget(entry);
+        }}
+      />
+
+      <VersionDiff
+        isOpen={!!diffTarget}
+        onClose={() => setDiffTarget(null)}
+        original={diffTarget?.payload ?? null}
+        modified={state.present}
+        title={`Comparing with: ${diffTarget?.description}`}
       />
     </div>
   );
