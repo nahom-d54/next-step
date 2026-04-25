@@ -10,7 +10,7 @@ export interface HistoryPanelProps {
   className?: string;
 }
 
-export function HistoryPanel({ entries, onRestore, className = '' }: HistoryPanelProps) {
+export function HistoryPanel({ entries, onRestore, onViewDiff, className = '' }: HistoryPanelProps) {
   return (
     <Card title="Change History" className={`history-panel ${className}`}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
