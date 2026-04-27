@@ -9,6 +9,8 @@
   "include": ["src"],
   "references": [
     { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
+    { "path": "./tsconfig.node.json" },
+    { "path": "../../packages/feature-task-search" },
+    { "path": "../../packages/feature-task-tags" }
   ]
 }
