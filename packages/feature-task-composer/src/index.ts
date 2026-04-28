@@ -12,6 +12,7 @@ export type {
   TaskComposerInitialValues,
   TaskComposerPriority,
   TaskComposerSubmitHandler,
+  TaskComposerValidationOptions,
   TaskComposerValidationResult,
   TaskComposerValues,
   TaskFormProps,

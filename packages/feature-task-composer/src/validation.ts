@@ -1,5 +1,6 @@
 import type {
   TaskComposerFieldErrors,
+  TaskComposerValidationOptions,
   TaskComposerValidationResult,
   TaskComposerValues,
 } from './types';
@@ -26,7 +27,9 @@ function isValidDateInput(value: string): boolean {
 
 export function validateTaskComposerValues(
   values: TaskComposerValues,
+  options: TaskComposerValidationOptions = {},
 ): TaskComposerValidationResult {
+  const { minDueDate, maxDueDate } = options;
   const errors: TaskComposerFieldErrors = {};
 
   const title = values.title.trim();
@@ -53,6 +56,26 @@ export function validateTaskComposerValues(
   const dueDate = values.dueDate.trim();
   if (dueDate.length > 0 && !isValidDateInput(dueDate)) {
     errors.dueDate = 'Due date must be a valid date';
+  }
+
+  if (
+    !errors.dueDate &&
+    dueDate.length > 0 &&
+    minDueDate &&
+    isValidDateInput(minDueDate) &&
+    dueDate < minDueDate
+  ) {
+    errors.dueDate = `Due date must be on or after ${minDueDate}`;
+  }
+
+  if (
+    !errors.dueDate &&
+    dueDate.length > 0 &&
+    maxDueDate &&
+    isValidDateInput(maxDueDate) &&
+    dueDate > maxDueDate
+  ) {
+    errors.dueDate = `Due date must be on or before ${maxDueDate}`;
   }
 
   return {

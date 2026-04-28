@@ -22,11 +22,14 @@ export interface TaskFormProps {
   disabled?: boolean;
   submitLabel?: string;
   title?: string;
+  minDueDate?: string;
+  maxDueDate?: string;
 }
 
 export interface PrioritySelectorProps {
   value: TaskComposerPriority;
   onChange: (priority: TaskComposerPriority) => void;
+  name?: string;
   disabled?: boolean;
   id?: string;
   invalid?: boolean;
@@ -36,12 +39,18 @@ export interface PrioritySelectorProps {
 export interface DueDatePickerProps {
   value: string;
   onChange: (value: string) => void;
+  name?: string;
   disabled?: boolean;
   id?: string;
   invalid?: boolean;
   ariaDescribedBy?: string;
   min?: string;
   max?: string;
+}
+
+export interface TaskComposerValidationOptions {
+  minDueDate?: string;
+  maxDueDate?: string;
 }
 
 export type TaskComposerFieldName = keyof TaskComposerValues;

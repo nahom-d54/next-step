@@ -2,6 +2,7 @@ import { useId, type ChangeEvent, type FormEvent } from 'react';
 
 import { useTaskForm } from '../hooks/useTaskForm';
 import type { TaskFormProps } from '../types';
+import { validateTaskComposerValues } from '../validation';
 import { DueDatePicker } from './DueDatePicker';
 import { PrioritySelector } from './PrioritySelector';
 
@@ -12,10 +13,17 @@ export function TaskForm({
   disabled,
   submitLabel = 'Save task',
   title = 'Task details',
+  minDueDate,
+  maxDueDate,
 }: TaskFormProps) {
   const { values, errors, isSubmitting, updateField, handleSubmit } = useTaskForm({
     initialValues,
     onSubmit,
+    validate: (formValues) =>
+      validateTaskComposerValues(formValues, {
+        minDueDate,
+        maxDueDate,
+      }),
   });
 
   const idPrefix = useId();
@@ -108,6 +116,7 @@ export function TaskForm({
 
       <PrioritySelector
         id={priorityId}
+        name="priority"
         value={values.priority}
         disabled={submitDisabled}
         invalid={Boolean(errors.priority)}
@@ -127,10 +136,13 @@ export function TaskForm({
 
       <DueDatePicker
         id={dueDateId}
+        name="dueDate"
         value={values.dueDate}
         disabled={submitDisabled}
         invalid={Boolean(errors.dueDate)}
         ariaDescribedBy={errors.dueDate ? dueDateErrorId : undefined}
+        min={minDueDate}
+        max={maxDueDate}
         onChange={(value) => {
           updateField('dueDate', value);
         }}
