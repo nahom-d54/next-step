@@ -16,6 +16,7 @@ function formatPriorityLabel(priority: TaskComposerPriority): string {
 export function PrioritySelector({
   value,
   onChange,
+  name,
   disabled,
   id,
   invalid,
@@ -26,6 +27,7 @@ export function PrioritySelector({
       <span style={{ fontWeight: 600, fontSize: '0.875rem' }}>Priority</span>
       <select
         id={id}
+        name={name}
         value={value}
         disabled={disabled}
         aria-invalid={invalid}

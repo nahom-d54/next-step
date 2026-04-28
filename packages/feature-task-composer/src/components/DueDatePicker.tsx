@@ -5,6 +5,7 @@ import type { DueDatePickerProps } from '../types';
 export function DueDatePicker({
   value,
   onChange,
+  name,
   disabled,
   id,
   invalid,
@@ -17,6 +18,7 @@ export function DueDatePicker({
       <span style={{ fontWeight: 600, fontSize: '0.875rem' }}>Due date</span>
       <input
         id={id}
+        name={name}
         type="date"
         value={value}
         disabled={disabled}
