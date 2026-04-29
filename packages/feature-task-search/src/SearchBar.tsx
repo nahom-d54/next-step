@@ -98,15 +98,16 @@ export default function SearchBar({
 
       {query ? (
         <button
+          type="button"
           aria-label="Clear search"
           onClick={() => {
             setQuery('')
             debRef.current?.cancel()
             onResults?.(tasks)
           }}
-          style={{ padding: '6px 8px' }}
+          style={{ padding: '6px 10px' }}
         >
-          ✕
+          Clear Search
         </button>
       ) : null}
 

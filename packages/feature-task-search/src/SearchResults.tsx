@@ -1,4 +1,4 @@
-import { memo } from 'react'
+import { memo, useMemo } from 'react'
 import type { Task } from './searchStrategies'
 import { coordinateTasks, type SearchCriteria } from './SearchCoordination'
 import { Card } from '@next-step/ui-components'
@@ -21,10 +21,17 @@ function SearchResults({ tasks, isLoading = false, criteria }: Props) {
     )
   }
 
-  const filtered = criteria ? coordinateTasks(tasks, criteria) : tasks
+  const filtered = useMemo(
+    () => (criteria ? coordinateTasks(tasks, criteria) : tasks),
+    [tasks, criteria],
+  )
 
   if (!filtered || filtered.length === 0) {
-    return <div>No results</div>
+    return (
+      <div className="rounded border border-dashed border-gray-300 bg-gray-50 p-6 text-center text-sm text-gray-600">
+        No results found
+      </div>
+    )
   }
 
   return (
