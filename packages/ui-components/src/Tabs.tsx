@@ -31,7 +31,7 @@ export default function Tabs<T = string>({ items, activeValue, onChange, classNa
       </select>
 
       {/* Desktop / larger: scrollable tab list */}
-      <div role="tablist" className="hidden sm:flex gap-2 overflow-x-auto whitespace-nowrap">
+      <div role="tablist" className="hidden sm:flex gap-2 overflow-x-auto border-b border-gray-200 pb-1 max-w-full whitespace-nowrap">
         {items.map((it) => {
           const isActive = it.value === activeValue
           return (
@@ -41,10 +41,10 @@ export default function Tabs<T = string>({ items, activeValue, onChange, classNa
               aria-selected={isActive}
               type="button"
               onClick={() => onChange(it.value)}
-              className={`flex-shrink-0 px-3 py-1 text-sm rounded-t-md border-b-2 -mb-px focus:outline-none ${
+              className={`flex-shrink-0 min-w-[5rem] rounded-t-md border-b-2 -mb-px px-3 py-2 text-sm focus:outline-none transition duration-200 ease-out transform ${
                 isActive
                   ? 'border-blue-600 text-blue-600 font-semibold'
-                  : 'border-transparent text-gray-700 hover:text-gray-900'
+                  : 'border-transparent text-gray-700 hover:text-gray-900 hover:-translate-y-0.5'
               }`}
             >
               {it.label}
