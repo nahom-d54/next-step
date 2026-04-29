@@ -1,14 +1,15 @@
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef, memo } from 'react'
+import type { ReactNode } from 'react'
 
 type Props = {
   isOpen: boolean
   onClose: () => void
-  children: React.ReactNode
+  children: ReactNode
   title?: string
   className?: string
 }
 
-export default function Modal({ isOpen, onClose, children, title, className }: Props) {
+function Modal({ isOpen, onClose, children, title, className }: Props) {
   const contentRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
@@ -60,3 +61,5 @@ export default function Modal({ isOpen, onClose, children, title, className }: P
     </div>
   )
 }
+
+export default memo(Modal)

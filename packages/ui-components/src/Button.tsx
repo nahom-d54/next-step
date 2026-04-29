@@ -1,9 +1,10 @@
-import React from 'react'
+import type { ButtonHTMLAttributes, ReactNode } from 'react'
 
-type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: 'primary' | 'secondary' | 'ghost'
   loading?: boolean
   className?: string
+  children?: ReactNode
 }
 
 export default function Button({ variant = 'primary', className = '', children, loading = false, disabled, ...rest }: Props) {

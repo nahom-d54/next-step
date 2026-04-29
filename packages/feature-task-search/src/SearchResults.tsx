@@ -1,4 +1,4 @@
-import React from 'react'
+import { memo } from 'react'
 import type { Task } from './searchStrategies'
 import { coordinateTasks, type SearchCriteria } from './SearchCoordination'
 import { Card } from '@next-step/ui-components'
@@ -10,7 +10,7 @@ type Props = {
   criteria?: SearchCriteria
 }
 
-export default function SearchResults({ tasks, isLoading = false, criteria }: Props) {
+function SearchResults({ tasks, isLoading = false, criteria }: Props) {
   if (isLoading) {
     return (
       <div className="space-y-2">
@@ -38,3 +38,5 @@ export default function SearchResults({ tasks, isLoading = false, criteria }: Pr
     </div>
   )
 }
+
+export default memo(SearchResults)

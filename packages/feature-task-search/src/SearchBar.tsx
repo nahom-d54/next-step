@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import type { Task } from './searchStrategies'
 import { getSearchStrategy, searchStrategies } from './searchStrategies'
 import { debounce } from '@next-step/utils'
@@ -31,7 +31,7 @@ export default function SearchBar({
   const [strategyKey, setStrategyKey] = useState(initialStrategy)
 
   const [debouncedQuery, setDebouncedQuery] = useState(query)
-  const debRef = React.useRef<ReturnType<typeof debounce> | null>(null)
+  const debRef = useRef<ReturnType<typeof debounce> | null>(null)
 
   // sync to externally provided query when it changes
   useEffect(() => {

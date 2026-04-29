@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import type { Task as FTask } from '@next-step/feature-task-search'
 import type { Tag } from '@next-step/feature-task-tags'
 import { TaskFilterCoordinator } from '@next-step/feature-task-search'
@@ -24,7 +24,7 @@ export default function Dashboard() {
   const handleTagCreated = (t: Tag) => setTags((s) => [...s, t])
   const handleTagDeleted = (id: string) => setTags((s) => s.filter((x) => x.id !== id))
 
-  const frosted: React.CSSProperties = {
+  const frosted: import('react').CSSProperties = {
     borderRadius: 12,
     padding: 16,
     border: '1px solid var(--border)',

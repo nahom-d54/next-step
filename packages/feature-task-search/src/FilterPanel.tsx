@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { SearchStrategy } from './searchStrategies'
 import { searchStrategies } from './searchStrategies'
 
@@ -9,7 +9,7 @@ type Props = {
   defaultValue?: string
   onFilterChange?: (key: string) => void
   className?: string
-  style?: React.CSSProperties
+  style?: import('react').CSSProperties
 }
 
 export default function FilterPanel({

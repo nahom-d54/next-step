@@ -1,4 +1,3 @@
-import React from 'react';
 import type { Task } from './searchStrategies';
 type Props = {
     tasks: Task[];

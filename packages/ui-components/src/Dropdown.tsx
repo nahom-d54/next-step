@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import type { KeyboardEvent } from 'react'
 
 type Option<T = string> = {
   label: string
@@ -35,7 +36,7 @@ export default function Dropdown<T = string>({
 
   useEffect(() => setHighlight(0), [open, options])
 
-  const handleKey = (e: React.KeyboardEvent) => {
+  const handleKey = (e: KeyboardEvent) => {
     if (e.key === 'ArrowDown') {
       e.preventDefault()
       setHighlight((h) => Math.min(h + 1, options.length - 1))

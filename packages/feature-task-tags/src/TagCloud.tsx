@@ -1,11 +1,11 @@
-import React from 'react'
 import { Badge } from '@next-step/ui-components'
 import type { Tag } from './types'
+import type { CSSProperties, ReactNode } from 'react'
 
 type Props = {
   tags: Tag[]
   className?: string
-  style?: React.CSSProperties
+  style?: CSSProperties
   onTagSelect?: (tag: Tag) => void
   selectedId?: string
 }

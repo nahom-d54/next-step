@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Modal, Button } from '@next-step/ui-components'
 import type { Tag } from './types'
 import { generateId, storage } from '@next-step/utils'

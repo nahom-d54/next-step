@@ -1,5 +1,3 @@
-import React from 'react'
-
 type Item<T = string> = {
   label: string
   value: T

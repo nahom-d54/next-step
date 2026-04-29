@@ -1,11 +1,12 @@
-import React from 'react'
+import { forwardRef } from 'react'
+import type { InputHTMLAttributes } from 'react'
 
-type Props = React.InputHTMLAttributes<HTMLInputElement> & {
+type Props = InputHTMLAttributes<HTMLInputElement> & {
   loading?: boolean
   className?: string
 }
 
-const Input = React.forwardRef<HTMLInputElement, Props>(function Input({ loading = false, className = '', disabled, ...rest }, ref) {
+const Input = forwardRef<HTMLInputElement, Props>(function Input({ loading = false, className = '', disabled, ...rest }, ref) {
   const isDisabled = Boolean(disabled || loading)
   const base = 'w-full px-3 py-2 pr-10 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500'
   const disabledClass = isDisabled ? 'opacity-50 cursor-not-allowed' : ''

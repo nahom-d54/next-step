@@ -9,9 +9,21 @@
 
     /* Bundler mode */
     "moduleResolution": "bundler",
+    "ignoreDeprecations": "6.0",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
+    "baseUrl": ".",
+    "paths": {
+      "@next-step/feature-task-search": ["../../packages/feature-task-search/dist"],
+      "@next-step/feature-task-search/*": ["../../packages/feature-task-search/dist/*"],
+      "@next-step/feature-task-tags": ["../../packages/feature-task-tags/dist"],
+      "@next-step/feature-task-tags/*": ["../../packages/feature-task-tags/dist/*"],
+      "@next-step/ui-components": ["../../packages/ui-components/dist"],
+      "@next-step/ui-components/*": ["../../packages/ui-components/dist/*"],
+      "@next-step/utils": ["../../packages/utils/dist"],
+      "@next-step/utils/*": ["../../packages/utils/dist/*"]
+    },
     "emitDeclarationOnly": true,
     "composite": true,
     "declaration": true,

@@ -1,5 +1,3 @@
-import React from 'react'
-
 type Props = {
   value: number
   /** Tailwind background color class for the fill, e.g. 'bg-blue-600' */
