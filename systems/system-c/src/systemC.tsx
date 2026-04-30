@@ -19,11 +19,11 @@ type DemoTask = {
   updatedAtIso: string;
 };
 
-export interface StudentCSystemProps {
+export interface SystemCProps {
   className?: string;
 }
 
-export function StudentCSystem({ className = "" }: StudentCSystemProps) {
+export function SystemC({ className = "" }: SystemCProps) {
   const initialTask = useMemo<DemoTask>(() => {
     return {
       title: "Demo Task",

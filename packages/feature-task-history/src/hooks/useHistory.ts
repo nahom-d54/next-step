@@ -1,13 +1,31 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { HistoryEntry, HistoryState } from '../types';
 import { generateId } from '@next-step/utils';
 
-export function useHistory<T>(initialState: T | null = null) {
-  const [state, setState] = useState<HistoryState<T>>({
-    past: [],
-    present: initialState,
-    future: [],
+export function useHistory<T>(initialState: T | null = null, persistenceKey?: string) {
+  const [state, setState] = useState<HistoryState<T>>(() => {
+    if (persistenceKey) {
+      const saved = localStorage.getItem(persistenceKey);
+      if (saved) {
+        try {
+          return JSON.parse(saved);
+        } catch (e) {
+          console.error('Failed to parse history from localStorage', e);
+        }
+      }
+    }
+    return {
+      past: [],
+      present: initialState,
+      future: [],
+    };
   });
+
+  useEffect(() => {
+    if (persistenceKey) {
+      localStorage.setItem(persistenceKey, JSON.stringify(state));
+    }
+  }, [state, persistenceKey]);
 
   const canUndo = state.past.length > 0;
   const canRedo = state.future.length > 0;

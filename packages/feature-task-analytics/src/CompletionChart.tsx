@@ -60,7 +60,17 @@ export function CompletionChart({ data = defaultData }: CompletionChartProps) {
     <Card title="Task Completion Over Time">
       <div style={{ width: '100%', height: 320, marginTop: '16px' }}>
         <ResponsiveContainer>
-          <AreaChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+          <AreaChart 
+            data={data} 
+            margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+            onClick={(e) => {
+              if (e && e.activePayload && e.activePayload.length > 0) {
+                const point = e.activePayload[0].payload as ChartDataPoint;
+                alert(`On ${formatDate(point.date)}, you completed ${point.tasks} tasks!`);
+              }
+            }}
+            style={{ cursor: 'pointer' }}
+          >
             <defs>
               <linearGradient id="colorTasks" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3}/>

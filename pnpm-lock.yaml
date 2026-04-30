@@ -237,7 +237,7 @@ importers:
         specifier: ~6.0.2
         version: 6.0.2
 
-  systems/student-c-system:
+  systems/system-c:
     dependencies:
       '@next-step/feature-task-analytics':
         specifier: workspace:*

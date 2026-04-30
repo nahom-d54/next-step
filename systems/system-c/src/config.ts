@@ -1,5 +1,5 @@
 /**
- * config.ts — Student C System configuration
+ * config.ts — System C System configuration
  *
  * All system-level configuration lives here.
  * Components are imported from packages/* and receive these values as props.

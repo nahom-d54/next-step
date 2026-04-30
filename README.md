@@ -29,10 +29,10 @@ A Component-Based Software Development (CBSD) monorepo for a Recursive Task Brea
 - Web: `pnpm dev:web`
 - API: `pnpm dev:api`
 
-### Run an individual system (example: Student C)
+### Run an individual system (example: System C)
 
-- Dev: `pnpm --filter @next-step/student-c-system dev`
-- Typecheck: `pnpm --filter @next-step/student-c-system typecheck`
+- Dev: `pnpm --filter @next-step/system-c dev`
+- Typecheck: `pnpm --filter @next-step/system-c typecheck`
 
 ## Component Packages Developed
 

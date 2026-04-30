@@ -1,5 +1,5 @@
 /**
- * App.tsx — Student C System entry component (assembly only)
+ * App.tsx — System C System entry component (assembly only)
  *
  * CBSD Rule: this file contains coordination logic only.
  * No new component logic is defined here — everything is imported
@@ -44,7 +44,7 @@ export function App() {
   );
 
   const { state, push, undo, redo, canUndo, canRedo } =
-    useHistory<DemoTask>(initialTask);
+    useHistory<DemoTask>(initialTask, 'system-c-history');
 
   const [diffTarget, setDiffTarget] = useState<HistoryEntry<DemoTask> | null>(
     null,

@@ -1,6 +1,6 @@
-# Student C System (Insights & Tracking)
+# System C (Insights & Tracking)
 
-This is Student C's **individual system assembly**. It composes Student C's two feature packages using the shared group packages.
+This is System C's **individual system assembly**. It composes System C's two feature packages using the shared group packages.
 
 ## What this system assembles
 
@@ -55,11 +55,11 @@ App (assembly + coordination)
 ## File Structure
 
 ```
-systems/student-c-system/
+systems/system-c/
 ├── src/
 │   ├── App.tsx              # Assembly: imports + composes features
 │   ├── config.ts            # Configuration only (no component logic)
-│   ├── studentCSystem.tsx   # Legacy standalone system component
+│   ├── systemC.tsx          # Legacy standalone system component
 │   └── main.tsx             # Entry point
 ├── package.json             # Dependencies on packages/*
 └── README.md                # Architecture documentation (this file)
@@ -70,8 +70,8 @@ systems/student-c-system/
 From repo root:
 
 - Install: `pnpm install`
-- Dev: `pnpm --filter @next-step/student-c-system dev`
-- Typecheck: `pnpm --filter @next-step/student-c-system typecheck`
-- Build: `pnpm --filter @next-step/student-c-system build`
+- Dev: `pnpm --filter @next-step/system-c dev`
+- Typecheck: `pnpm --filter @next-step/system-c typecheck`
+- Build: `pnpm --filter @next-step/system-c build`
 
 Vite will print the local URL (usually `http://localhost:5173`).
