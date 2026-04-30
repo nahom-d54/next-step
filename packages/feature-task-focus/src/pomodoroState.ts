@@ -180,3 +180,23 @@ export function plannedDurationSeconds(
   }
   return config.longBreakSeconds;
 }
+
+/**
+ * When moving from `previous` to `next` after a tick, returns the segment that
+ * just finished, or `null` if no segment completed (or e.g. user reset to idle).
+ */
+export function detectCompletedSegment(
+  previous: PomodoroState,
+  next: PomodoroState,
+): PomodoroSegment | null {
+  if (previous.runStatus !== "running" || previous.segment === null) {
+    return null;
+  }
+  if (next.runStatus === "idle" && next.segment === null) {
+    return null;
+  }
+  if (previous.segment !== next.segment) {
+    return previous.segment;
+  }
+  return null;
+}

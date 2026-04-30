@@ -42,3 +42,12 @@ export interface FocusSession {
   /** Planned length in minutes (for display). */
   plannedMinutes: number;
 }
+
+/**
+ * Emitted when a Pomodoro segment completes (via tick), not on reset.
+ */
+export interface SegmentFinishedEvent {
+  segment: PomodoroSegment;
+  plannedSeconds: number;
+  endedAtIso: string;
+}

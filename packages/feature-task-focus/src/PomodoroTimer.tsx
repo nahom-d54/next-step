@@ -10,6 +10,7 @@ import type { CSSProperties } from "react";
 import {
   DEFAULT_POMODORO_CONFIG,
   createInitialPomodoroState,
+  detectCompletedSegment,
   labelForSegment,
   pausePomodoro,
   plannedDurationSeconds,
@@ -18,7 +19,11 @@ import {
   startWork,
   tickPomodoro,
 } from "./pomodoroState.js";
-import type { PomodoroConfig, PomodoroState } from "./types.js";
+import type {
+  PomodoroConfig,
+  PomodoroState,
+  SegmentFinishedEvent,
+} from "./types.js";
 
 export interface PomodoroTimerProps {
   /**
@@ -27,6 +32,15 @@ export interface PomodoroTimerProps {
   config?: PomodoroConfig;
   style?: CSSProperties;
   className?: string;
+  /**
+   * Fires when the timer advances into the next phase after a segment completes.
+   * Not emitted when the timer is reset.
+   */
+  onSegmentFinished?: (event: SegmentFinishedEvent) => void;
+  /**
+   * `plain` removes the bordered card chrome for embedding (e.g. in {@link FocusMode}).
+   */
+  variant?: "card" | "plain";
 }
 
 function formatMmSs(totalSeconds: number): string {
@@ -43,6 +57,8 @@ export function PomodoroTimer({
   config: configProp,
   style,
   className,
+  onSegmentFinished,
+  variant = "card",
 }: PomodoroTimerProps) {
   const config = useMemo(
     () => configProp ?? DEFAULT_POMODORO_CONFIG,
@@ -52,6 +68,9 @@ export function PomodoroTimer({
   const configRef = useRef<PomodoroConfig>(config);
   configRef.current = config;
 
+  const onFinishRef = useRef(onSegmentFinished);
+  onFinishRef.current = onSegmentFinished;
+
   const [state, setState] = useState<PomodoroState>(createInitialPomodoroState);
 
   useEffect(() => {
@@ -60,7 +79,22 @@ export function PomodoroTimer({
     }
 
     const id = window.setInterval(() => {
-      setState((previous) => tickPomodoro(previous, configRef.current));
+      setState((previous) => {
+        const cfg = configRef.current;
+        const next = tickPomodoro(previous, cfg);
+        const done = detectCompletedSegment(previous, next);
+        if (done !== null) {
+          const event: SegmentFinishedEvent = {
+            segment: done,
+            plannedSeconds: plannedDurationSeconds(done, cfg),
+            endedAtIso: new Date().toISOString(),
+          };
+          queueMicrotask(() => {
+            onFinishRef.current?.(event);
+          });
+        }
+        return next;
+      });
     }, 1000);
 
     return () => {
@@ -94,15 +128,17 @@ export function PomodoroTimer({
   const isIdle =
     state.runStatus === "idle" && state.segment === null && state.secondsRemaining === 0;
 
+  const isPlain = variant === "plain";
+
   return (
     <section
       className={className}
       style={{
         borderRadius: "0.625rem",
-        border: "1px solid #d1d5db",
+        border: isPlain ? "none" : "1px solid #d1d5db",
         padding: "1rem",
-        backgroundColor: "#ffffff",
-        maxWidth: "22rem",
+        backgroundColor: isPlain ? "transparent" : "#ffffff",
+        maxWidth: isPlain ? "none" : "22rem",
         ...style,
       }}
       aria-label="Pomodoro timer"
