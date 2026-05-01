@@ -3,7 +3,7 @@ import type { Task as FTask } from '@next-step/feature-task-search'
 import type { Tag } from '@next-step/feature-task-tags'
 import { TaskFilterCoordinator } from '@next-step/feature-task-search'
 import { TagManager } from '@next-step/feature-task-tags'
-import '../../src/App.css'
+import '../App.css'
 
 const initialTags: Tag[] = [
   { id: 't1', label: 'urgent', color: '#ef4444' },
