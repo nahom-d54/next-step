@@ -1,0 +1,29 @@
+{
+  "name": "@next-step/student-e-system",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Student E individual system assembly: feature-task-export + feature-task-focus",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "typecheck": "tsc -b --pretty false",
+    "preview": "vite preview",
+    "lint": "echo \"No lint configured for student-e-system yet\"",
+    "test": "echo \"No tests configured for student-e-system yet\""
+  },
+  "dependencies": {
+    "@next-step/feature-task-export": "workspace:*",
+    "@next-step/feature-task-focus": "workspace:*",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  },
+  "devDependencies": {
+    "@types/node": "^24.12.2",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "typescript": "~6.0.2",
+    "vite": "^8.0.4"
+  }
+}
