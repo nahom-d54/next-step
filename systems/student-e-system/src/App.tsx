@@ -1,4 +1,10 @@
-import { useCallback, useMemo, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import type { CSSProperties } from "react";
 
 import {
   ExportButton,
@@ -22,6 +28,14 @@ import {
 } from "./config.ts";
 import { readFocusSessions, writeFocusSessions } from "./focusSessionsStorage.ts";
 
+const CARD: CSSProperties = {
+  padding: "1.25rem",
+  borderRadius: "0.75rem",
+  backgroundColor: "#ffffff",
+  border: "1px solid #e5e7eb",
+  boxShadow: "0 4px 22px rgba(15, 23, 42, 0.06)",
+};
+
 /** ASSEMBLY ONLY — composites + coordination imported from `@next-step/*`. */
 export function App() {
   const [exportFormat, setExportFormat] = useState<ExportFormat>("markdown");
@@ -32,6 +46,24 @@ export function App() {
   const [initialFocusSessions] = useState(() =>
     readFocusSessions(FOCUS_HISTORY_STORAGE_KEY),
   );
+  const [banner, setBanner] = useState<string | null>(null);
+  const [chimesMuted, setChimesMuted] = useState(false);
+
+  useEffect(() => {
+    if (banner === null) {
+      return;
+    }
+    const id = window.setTimeout(() => {
+      setBanner(null);
+    }, 4200);
+    return () => {
+      window.clearTimeout(id);
+    };
+  }, [banner]);
+
+  const announce = useCallback((text: string) => {
+    setBanner(text);
+  }, []);
 
   const root = tasks[0];
   const focusHeadline =
@@ -47,18 +79,31 @@ export function App() {
     const blob = new Blob([content], { type: adapter.mimeType() });
     const url = URL.createObjectURL(blob);
     const stamp = new Date().toISOString().slice(0, 10);
+    const filename = `task-board-${stamp}.${adapter.fileExtension()}`;
     try {
       const anchor = document.createElement("a");
       anchor.href = url;
-      anchor.download = `task-board-${stamp}.${adapter.fileExtension()}`;
+      anchor.download = filename;
       anchor.rel = "noopener";
       anchor.click();
+      announce(`Download started (${filename}).`);
     } finally {
       queueMicrotask(() => {
         URL.revokeObjectURL(url);
       });
     }
-  }, [exportFormat, tasks]);
+  }, [announce, exportFormat, tasks]);
+
+  const copyPreview = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(previewContent);
+      announce(`${formatLabel(exportFormat)} preview copied to clipboard.`);
+    } catch {
+      announce(
+        "Clipboard blocked — select text manually in the preview, or use HTTPS / localhost.",
+      );
+    }
+  }, [announce, exportFormat, previewContent]);
 
   const persistFocusSessions = useCallback((sessions: FocusSession[]) => {
     writeFocusSessions(FOCUS_HISTORY_STORAGE_KEY, sessions);
@@ -75,6 +120,8 @@ export function App() {
     });
   }, []);
 
+  const phaseSound = !chimesMuted;
+
   return (
     <div
       style={{
@@ -86,14 +133,32 @@ export function App() {
         margin: "0 auto",
       }}
     >
+      {banner ? (
+        <div
+          role="status"
+          aria-live="polite"
+          style={{
+            borderRadius: "0.625rem",
+            border: "1px solid #bbf7d0",
+            backgroundColor: "#ecfdf5",
+            color: "#065f46",
+            padding: "0.65rem 0.85rem",
+            fontSize: "0.875rem",
+            fontWeight: 600,
+          }}
+        >
+          {banner}
+        </div>
+      ) : null}
+
       <header>
         <h1 style={{ fontSize: "1.5rem", margin: "0 0 0.35rem", fontWeight: 900 }}>
           {SYSTEM_TITLE}
         </h1>
         <p style={{ margin: 0, fontSize: "0.95rem", color: "#6b7280", lineHeight: 1.5 }}>
-          Day 10 assembly — shared task snapshot drives{' '}
-          <strong>both</strong> export adapters and contextual focus chrome. Focus timers write
-          through to <code>localStorage</code> via coordination glue.
+          Day 11 polish — export preview shows payload metrics, clipboard + download confirmations,
+          and Pomodoro phase tones (skipped automatically when <strong>prefers-reduced-motion</strong>{" "}
+          is reduce).
         </p>
       </header>
 
@@ -114,16 +179,7 @@ export function App() {
             gap: "1rem",
           }}
         >
-          <section
-            style={{
-              padding: "1.25rem",
-              borderRadius: "0.75rem",
-              backgroundColor: "#ffffff",
-              border: "1px solid #e5e7eb",
-              flex: 1,
-              minHeight: 0,
-            }}
-          >
+          <section style={{ ...CARD, flex: 1, minHeight: 0 }}>
             <h2 style={{ margin: "0 0 0.75rem", fontSize: "1.05rem" }}>Living task export</h2>
             <p style={{ margin: "0 0 0.85rem", color: "#6b7280", fontSize: "0.875rem", lineHeight: 1.5 }}>
               The preview + download payloads read from coordinated React state (seeded from{" "}
@@ -138,13 +194,30 @@ export function App() {
                 marginBottom: "1rem",
               }}
             >
-              <div style={{ fontSize: "0.8rem", fontWeight: 800, color: "#9ca3af", marginBottom: "0.25rem", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+              <div
+                style={{
+                  fontSize: "0.8rem",
+                  fontWeight: 800,
+                  color: "#9ca3af",
+                  marginBottom: "0.25rem",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.06em",
+                }}
+              >
                 Board snapshot
               </div>
               <div style={{ fontWeight: 800, fontSize: "0.975rem", color: "#111827" }}>
                 {root?.title ?? "No seed tasks"}
               </div>
-              <div style={{ marginTop: "0.65rem", display: "flex", gap: "0.5rem", flexWrap: "wrap", alignItems: "center" }}>
+              <div
+                style={{
+                  marginTop: "0.65rem",
+                  display: "flex",
+                  gap: "0.5rem",
+                  flexWrap: "wrap",
+                  alignItems: "center",
+                }}
+              >
                 <button
                   type="button"
                   onClick={toggleRootMilestone}
@@ -178,6 +251,24 @@ export function App() {
                 onExport={coordinateDownload}
                 label={`Download ${formatLabel(exportFormat)}`}
               />
+              <button
+                type="button"
+                onClick={() => {
+                  void copyPreview();
+                }}
+                style={{
+                  borderRadius: "0.625rem",
+                  border: "1px solid #d1d5db",
+                  padding: "0.5rem 0.85rem",
+                  fontWeight: 700,
+                  fontSize: "0.875rem",
+                  backgroundColor: "#ffffff",
+                  color: "#374151",
+                  cursor: "pointer",
+                }}
+              >
+                Copy preview
+              </button>
             </div>
             <ExportPreview format={exportFormat} content={previewContent} />
           </section>
@@ -192,35 +283,42 @@ export function App() {
             gap: "1rem",
           }}
         >
-          <section
-            style={{
-              padding: "1.25rem",
-              borderRadius: "0.75rem",
-              backgroundColor: "#ffffff",
-              border: "1px solid #e5e7eb",
-            }}
-          >
+          <section style={CARD}>
             <h2 style={{ margin: "0 0 1rem", fontSize: "1.05rem" }}>Pomodoro (surface)</h2>
             <p style={{ margin: "0 0 1rem", color: "#6b7280", fontSize: "0.875rem", lineHeight: 1.5 }}>
-              Quick timer on the board for lightweight check-ins. The modal below runs a second
-              embedded instance for deep focus.
+              Quick timer on the board. Phase-completion chimes mirror the modal timer unless muted
+              below (respects reduced-motion users automatically).
             </p>
-            <PomodoroTimer />
+            <PomodoroTimer phaseTransitionSound={phaseSound} />
           </section>
 
-          <section
-            style={{
-              padding: "1.25rem",
-              borderRadius: "0.75rem",
-              backgroundColor: "#ffffff",
-              border: "1px solid #e5e7eb",
-            }}
-          >
+          <section style={CARD}>
             <h2 style={{ margin: "0 0 1rem", fontSize: "1.05rem" }}>Focus mode</h2>
             <p style={{ margin: "0 0 0.85rem", color: "#6b7280", fontSize: "0.9rem", lineHeight: 1.5 }}>
               Fullscreen shell with timer + session stats. Segment history hydrates from{" "}
               <code>localStorage</code> and writes back on every finished Pomodoro segment.
             </p>
+            <label
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "0.45rem",
+                fontSize: "0.8125rem",
+                fontWeight: 600,
+                color: "#4b5563",
+                marginBottom: "0.85rem",
+                cursor: "pointer",
+              }}
+            >
+              <input
+                type="checkbox"
+                checked={chimesMuted}
+                onChange={(e) => {
+                  setChimesMuted(e.target.checked);
+                }}
+              />
+              Mute phase transition sounds (surface + modal)
+            </label>
             <button
               type="button"
               onClick={() => {
@@ -251,6 +349,7 @@ export function App() {
         taskTitle={focusHeadline}
         initialSessions={initialFocusSessions}
         onSessionsChange={persistFocusSessions}
+        phaseTransitionSound={phaseSound}
       />
     </div>
   );

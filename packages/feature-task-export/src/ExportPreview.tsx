@@ -97,25 +97,41 @@ export function ExportPreview({
             {emptyMessage}
           </p>
         ) : (
-          <pre
-            style={{
-              margin: 0,
-              maxHeight,
-              overflow: "auto",
-              padding: "0.75rem",
-              borderRadius: "0.5rem",
-              backgroundColor: "#f3f4f6",
-              color: "#111827",
-              fontSize: "0.8125rem",
-              lineHeight: 1.45,
-              fontFamily:
-                'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-              whiteSpace: "pre-wrap",
-              wordBreak: "break-word",
-            }}
-          >
-            {content}
-          </pre>
+          <>
+            <pre
+              style={{
+                margin: 0,
+                maxHeight,
+                overflow: "auto",
+                padding: "0.75rem",
+                borderRadius: "0.5rem",
+                backgroundColor: "#f3f4f6",
+                color: "#111827",
+                fontSize: "0.8125rem",
+                lineHeight: 1.45,
+                fontFamily:
+                  'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+                whiteSpace: "pre-wrap",
+                wordBreak: "break-word",
+              }}
+            >
+              {content}
+            </pre>
+            <div
+              style={{
+                marginTop: "0.6rem",
+                paddingTop: "0.5rem",
+                borderTop: "1px solid #e5e7eb",
+                fontSize: "0.72rem",
+                fontWeight: 600,
+                color: "#9ca3af",
+                letterSpacing: "0.02em",
+              }}
+              aria-label="Preview size"
+            >
+              {`${content.length.toLocaleString()} characters · ${new Blob([content]).size.toLocaleString()} bytes (UTF-8)`}
+            </div>
+          </>
         )}
       </div>
     </section>

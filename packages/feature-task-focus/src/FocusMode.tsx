@@ -16,6 +16,8 @@ export interface FocusModeProps {
   onSessionsChange?: (sessions: FocusSession[]) => void;
   /** Seed rows for {@link SessionStats} before new segments arrive (optional persistence hydrate). */
   initialSessions?: FocusSession[];
+  /** Passed through to embedded {@link PomodoroTimer} phase-completion tones. */
+  phaseTransitionSound?: boolean;
   style?: CSSProperties;
   className?: string;
 }
@@ -30,6 +32,7 @@ export function FocusMode({
   config,
   onSessionsChange,
   initialSessions,
+  phaseTransitionSound,
   style,
   className,
 }: FocusModeProps) {
@@ -191,6 +194,7 @@ export function FocusMode({
               variant="plain"
               config={config}
               onSegmentFinished={handleFinished}
+              phaseTransitionSound={phaseTransitionSound}
               style={{ padding: 0 }}
             />
           </div>
