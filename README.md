@@ -4,64 +4,116 @@ A Component-Based Software Development (CBSD) monorepo for a Recursive Task Brea
 
 ## Monorepo Structure
 
-- `apps/`
-  - `apps/web`: shared group web app (Vite + React)
-  - `apps/api`: shared group API (Fastify)
-- `packages/`: shared, reusable packages
-  - `@next-step/ui-components`: reusable UI primitives
-  - `@next-step/utils`: shared utility functions
-  - `@next-step/feature-*`: feature packages (composites)
-- `systems/`: individual student system assemblies (configuration + assembly only)
+```
+next-step/
+├── apps/
+│   ├── web/         # Shared group web app (Vite + React)
+│   └── api/         # Shared group API (Fastify + TypeScript)
+├── packages/        # Shared, reusable packages (group work)
+│   ├── ui-components/
+│   ├── utils/
+│   ├── feature-task-tree/
+│   ├── feature-task-composer/
+│   ├── feature-breakdown-action/
+│   ├── feature-task-templates/
+│   ├── feature-task-analytics/
+│   ├── feature-task-history/
+│   ├── feature-task-export/
+│   └── feature-task-focus/
+└── systems/         # Individual system assemblies (individual work)
+    ├── core-task-management-system/       # task-tree + task-composer
+    ├── ai-automation-system/              # breakdown-action + task-templates
+    ├── insights-tracking-system/          # task-analytics + task-history
+    ├── organization-discovery-system/     # task-search + task-tags
+    └── productivity-integration-system/   # task-export + task-focus
+```
 
 ## Setup
 
-- Install deps: `pnpm install`
+```bash
+# Install all dependencies from repo root
+pnpm install
+```
 
 ## Common Commands (from repo root)
 
-- Dev (all workspaces): `pnpm dev`
-- Build (all workspaces): `pnpm build`
-- Typecheck (all workspaces): `pnpm typecheck`
-- Test (all workspaces): `pnpm test`
+```bash
+pnpm dev          # Dev servers for all workspaces
+pnpm build        # Build all packages
+pnpm typecheck    # Typecheck all packages
+pnpm test         # Run all tests
+pnpm lint         # Lint all packages
+```
 
 ### Run a single workspace
 
-- Web: `pnpm dev:web`
-- API: `pnpm dev:api`
+```bash
+pnpm dev:web      # Vite + React web app
+pnpm dev:api      # Fastify API
 
-### Run an individual system (example: System C)
+# Run an individual system
+pnpm --filter @next-step/insights-tracking-system dev
+pnpm --filter @next-step/insights-tracking-system typecheck
+```
 
-- Dev: `pnpm --filter @next-step/system-c dev`
-- Typecheck: `pnpm --filter @next-step/system-c typecheck`
+## Package Overview
 
-## Component Packages Developed
+### `@next-step/ui-components`
 
-### 1. `@next-step/ui-components`
+Reusable, encapsulated UI primitives (CBSD encapsulated component model).
 
-Reusable, encapsulated UI primitives following the CBSD component model.
+| Component  | Description                                      |
+| ---------- | ------------------------------------------------ |
+| `Button`   | Clickable action element with variants           |
+| `Card`     | Content container with optional title/body       |
+| `Badge`    | Status/tag display with variant styling          |
+| `Progress` | Progress bar with label and configurable color   |
+| `Modal`    | Dialog overlay with open/close control           |
+| `Tooltip`  | Hover information display                        |
+| `Tabs`     | Tab navigation with active state management      |
 
-- **`Card`**: Content container with optional title, header/body layout.
-- **`Badge`**: Status/tag display with variant styling (default, success, warning, danger, info).
-- **`Progress`**: Progress bar visualization with label and configurable color.
+### `@next-step/utils`
 
-### 2. `@next-step/feature-task-analytics` (Insights & Tracking)
+Shared utility functions (pure functions / Objects pattern).
 
-Dashboard components showing task completion rates and productivity metrics.
+| Module      | Functions                                       |
+| ----------- | ----------------------------------------------- |
+| `date.ts`   | `formatDate`, `timeAgo`, `parseDate`            |
+| `id.ts`     | `generateId`                                    |
+| `string.ts` | `truncate`, `slugify`, `capitalize`             |
+| `api.ts`    | `fetchJSON`, `handleError`, `retry`             |
 
-- **`AnalyticsDashboard`**: Composite overview displaying stat cards, progress bars, and status badges.
+### `@next-step/feature-task-analytics` — Insights & Tracking
+
+Dashboard components for task completion and productivity metrics.
+
+- **`AnalyticsDashboard`**: Composite overview with stat cards, progress bars, and badges.
 - **`StatCard`**: Individual metric display with trend indicators.
-- **`CompletionChart`**: Visual task completion over time using Recharts.
-- **`ProductivityScore`**: Displays daily and weekly productivity metrics alongside trend badges.
+- **`CompletionChart`**: Visual task completion over time (Recharts).
+- **`ProductivityScore`**: Daily/weekly score with trend badge. *(Observer Pattern)*
 
-### 3. `@next-step/feature-task-history` (Insights & Tracking)
+### `@next-step/feature-task-history` — Insights & Tracking
 
-Centralized state management for task versioning and change tracking.
+State versioning, undo/redo, and version comparison.
 
-- **`useHistory`**: Custom React hook for managing Undo/Redo operations and state persistence across task modifications.
+- **`useHistory`**: Hook managing command stack for undo/redo + localStorage persistence. *(Command + Memento)*
+- **`HistoryPanel`**: Chronological change log with restore actions.
+- **`UndoRedoControls`**: Button controls wired to `useHistory`.
+- **`VersionDiff`**: Modal component comparing two task snapshots.
 
-### 4. `@next-step/utils`
+### `@next-step/feature-task-tree` — Core Task Management
 
-Common utility functions (pure functions / Objects pattern).
+Recursive task tree visualization with expand/collapse. *(Composite Pattern)*
 
-- **`date.ts`**: Helper functions for parsing and formatting dates (`formatDate`, `timeAgo`, `parseDate`).
-- **`id.ts`**: Alphanumeric ID generation utility (`generateId`).
+### `@next-step/feature-task-composer` — Core Task Management
+
+Task creation and editing with validation. *(Command Form Pattern)*
+
+### `@next-step/feature-task-export` — Productivity & Integration
+
+Export tasks to JSON, Markdown, or CSV. *(Adapter Pattern)*
+
+### `@next-step/feature-task-focus` — Productivity & Integration
+
+Focus mode with Pomodoro timer and session tracking. *(State Pattern)*
+

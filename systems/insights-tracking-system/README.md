@@ -1,6 +1,6 @@
-# System C (Insights & Tracking)
+# Insights Tracking System
 
-This is System C's **individual system assembly**. It composes System C's two feature packages using the shared group packages.
+This is the **individual system assembly** for the Insights & Tracking features. It composes the two feature packages using the shared group packages.
 
 ## What this system assembles
 
@@ -55,7 +55,7 @@ App (assembly + coordination)
 ## File Structure
 
 ```
-systems/system-c/
+systems/insights-tracking-system/
 ├── src/
 │   ├── App.tsx              # Assembly: imports + composes features
 │   ├── config.ts            # Configuration only (no component logic)
@@ -70,8 +70,8 @@ systems/system-c/
 From repo root:
 
 - Install: `pnpm install`
-- Dev: `pnpm --filter @next-step/system-c dev`
-- Typecheck: `pnpm --filter @next-step/system-c typecheck`
-- Build: `pnpm --filter @next-step/system-c build`
+- Dev: `pnpm --filter @next-step/insights-tracking-system dev`
+- Typecheck: `pnpm --filter @next-step/insights-tracking-system typecheck`
+- Build: `pnpm --filter @next-step/insights-tracking-system build`
 
 Vite will print the local URL (usually `http://localhost:5173`).
