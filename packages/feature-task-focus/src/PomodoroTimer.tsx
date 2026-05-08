@@ -19,6 +19,7 @@ import {
   startWork,
   tickPomodoro,
 } from "./pomodoroState.js";
+import { playPhaseTransitionChime } from "./phaseChime.js";
 import type {
   PomodoroConfig,
   PomodoroState,
@@ -41,6 +42,11 @@ export interface PomodoroTimerProps {
    * `plain` removes the bordered card chrome for embedding (e.g. in {@link FocusMode}).
    */
   variant?: "card" | "plain";
+  /**
+   * Play a short tone when a phase completes (respects `prefers-reduced-motion: reduce`).
+   * @default true
+   */
+  phaseTransitionSound?: boolean;
 }
 
 function formatMmSs(totalSeconds: number): string {
@@ -59,6 +65,7 @@ export function PomodoroTimer({
   className,
   onSegmentFinished,
   variant = "card",
+  phaseTransitionSound = true,
 }: PomodoroTimerProps) {
   const config = useMemo(
     () => configProp ?? DEFAULT_POMODORO_CONFIG,
@@ -70,6 +77,9 @@ export function PomodoroTimer({
 
   const onFinishRef = useRef(onSegmentFinished);
   onFinishRef.current = onSegmentFinished;
+
+  const soundEnabledRef = useRef(phaseTransitionSound);
+  soundEnabledRef.current = phaseTransitionSound;
 
   const [state, setState] = useState<PomodoroState>(createInitialPomodoroState);
 
@@ -90,6 +100,9 @@ export function PomodoroTimer({
             endedAtIso: new Date().toISOString(),
           };
           queueMicrotask(() => {
+            if (soundEnabledRef.current) {
+              playPhaseTransitionChime(done);
+            }
             onFinishRef.current?.(event);
           });
         }

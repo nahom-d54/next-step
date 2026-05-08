@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
 
 import { PomodoroTimer } from "./PomodoroTimer.js";
@@ -14,6 +14,10 @@ export interface FocusModeProps {
   config?: PomodoroConfig;
   /** Receives the full history whenever a segment completes. */
   onSessionsChange?: (sessions: FocusSession[]) => void;
+  /** Seed rows for {@link SessionStats} before new segments arrive (optional persistence hydrate). */
+  initialSessions?: FocusSession[];
+  /** Passed through to embedded {@link PomodoroTimer} phase-completion tones. */
+  phaseTransitionSound?: boolean;
   style?: CSSProperties;
   className?: string;
 }
@@ -27,10 +31,14 @@ export function FocusMode({
   taskTitle,
   config,
   onSessionsChange,
+  initialSessions,
+  phaseTransitionSound,
   style,
   className,
 }: FocusModeProps) {
-  const [sessions, setSessions] = useState<FocusSession[]>([]);
+  const [sessions, setSessions] = useState<FocusSession[]>(
+    () => initialSessions ?? [],
+  );
 
   useEffect(() => {
     if (!open) {
@@ -186,6 +194,7 @@ export function FocusMode({
               variant="plain"
               config={config}
               onSegmentFinished={handleFinished}
+              phaseTransitionSound={phaseTransitionSound}
               style={{ padding: 0 }}
             />
           </div>

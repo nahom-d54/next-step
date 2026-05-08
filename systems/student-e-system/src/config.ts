@@ -26,3 +26,7 @@ export const SAMPLE_EXPORT_TASKS: ExportTaskNode[] = [
 ];
 
 export const FOCUS_MODE_TASK_TITLE = "Deep work: integration review";
+
+/** Key used by Student E assembly to persist focus segment history locally. */
+export const FOCUS_HISTORY_STORAGE_KEY =
+  "@next-step/student-e:focus-sessions:v1";

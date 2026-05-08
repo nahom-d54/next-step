@@ -12,6 +12,7 @@ export {
 } from "./pomodoroState.js";
 export { FocusMode } from "./FocusMode.js";
 export { PomodoroTimer } from "./PomodoroTimer.js";
+export { playPhaseTransitionChime } from "./phaseChime.js";
 export { SessionStats } from "./SessionStats.js";
 export { focusSessionFromFinished } from "./sessionUtils.js";
 export type { FocusModeProps } from "./FocusMode.js";
